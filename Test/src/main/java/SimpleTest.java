@@ -29,6 +29,11 @@ public class SimpleTest {
     private static String clientPort = "19065";
 
     public static void main(String[] args) throws InterruptedException {
+    	SimpleTest test = new SimpleTest();
+    	test.run(args);
+    }
+    
+    public void run(String[] args) throws InterruptedException {
 	try {
 	    String pdp_endpoint = "http://" + serverIp + "/axis2/services/UconWs";
 	    String pep_host = clientIp;
@@ -44,9 +49,7 @@ public class SimpleTest {
 
 	    X509Certificate cert = null;
 	    try {
-		String certPos = System.getProperty("user.home") + "/cert.cer";
-
-		InputStream inStream = new FileInputStream(certPos);
+	    InputStream inStream = getClass().getClassLoader().getResourceAsStream("cert.cer");
 		CertificateFactory cf = CertificateFactory.getInstance("X.509");
 		cert = (X509Certificate) cf.generateCertificate(inStream);
 		inStream.close();
