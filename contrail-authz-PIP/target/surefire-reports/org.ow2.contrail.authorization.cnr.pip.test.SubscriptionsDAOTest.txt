@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: org.ow2.contrail.authorization.cnr.pip.test.SubscriptionsDAOTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.954 sec - in org.ow2.contrail.authorization.cnr.pip.test.SubscriptionsDAOTest

@@ -1,0 +1,111 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.ow2.contrail.common</groupId>
+	<artifactId>contrail-authz-PIP</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<name>Policy Information Point</name>
+	<packaging>aar</packaging>
+	<parent>
+		<groupId>org.ow2.contrail</groupId>
+		<artifactId>contrail</artifactId>
+		<version>0.3-SNAPSHOT</version>
+		<relativePath>../../contrail-parent</relativePath>
+	</parent>
+	<!-- <parent> <groupId>org.ow2.contrail.common</groupId> <artifactId>builder</artifactId> 
+		<version>0.1.0-SNAPSHOT</version> </parent> -->
+	<dependencies>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.ow2.contrail.common</groupId>
+			<artifactId>contrail-authz-Utils</artifactId>
+			<version>0.1.0-SNAPSHOT</version>
+			<type>jar</type>
+			<!-- <scope>compile</scope> -->
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>4.2.3.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+	</dependencies>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<slf4jVersion>1.6.1</slf4jVersion>
+	</properties>
+	<build>
+		<pluginManagement>
+                <plugins>
+			<!-- alesc: this skips all tests! --> 
+        	        <plugin>
+			        <groupId>org.apache.maven.plugins</groupId>
+			        <artifactId>maven-surefire-plugin</artifactId>
+			        <version>2.12.4</version>
+			        <configuration>
+			                <skipTests>true</skipTests>
+		        	</configuration>
+		      </plugin>
+		</plugins>
+	</pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.axis2</groupId>
+				<artifactId>axis2-aar-maven-plugin</artifactId>
+				<version>1.5.4</version>
+				<extensions>true</extensions>
+				<configuration>
+					<!-- point this to exact location of services.xml -->
+					<includeDependencies>true</includeDependencies>
+					<fileSets>
+						<fileSet>
+							<directory>.</directory>
+							<outputDirectory>META-INF</outputDirectory>
+							<includes>
+								<include>services.xml</include>
+							</includes>
+						</fileSet>
+						<!--<fileSet> <directory>src/main/config</directory> <outputDirectory>.</outputDirectory> 
+							</fileSet> -->
+					</fileSets>
+					<outputDirectory>${user.home}/axis2-1.6.2/repository/services</outputDirectory> <!--how to set axis home properly? -->
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<configuration>
+					<appendAssemblyId>false</appendAssemblyId>
+					<descriptors>
+						<descriptor>src/main/assembly/package.xml</descriptor>
+					</descriptors>
+					<finalName>contrail-authz-pip</finalName>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
