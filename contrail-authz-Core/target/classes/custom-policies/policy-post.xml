@@ -1,0 +1,34 @@
+<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+	PolicyId="urn:contraion:ucon:test-policy-end"
+	RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+	<Description>
+		TEST VEP-UCON POLICY END
+	</Description>
+	<Target />
+	<Rule RuleId="urn:contraion:ucon:test-rule-end" Effect="Permit">
+		<Description>
+			Nothing should be done at the end of access
+		</Description>
+		<Target>
+			<Resources>
+				<Resource>
+					<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">VMTemplate</AttributeValue>
+						<ResourceAttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+							DataType="http://www.w3.org/2001/XMLSchema#string" Issuer="CNR-Federation" />
+					</ResourceMatch>
+				</Resource>
+			</Resources>
+			<Actions>
+				<Action>
+					<ActionMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">deploy</AttributeValue>
+						<ActionAttributeDesignator AttributeId="urn:contrail:vep:action:id"
+							DataType="http://www.w3.org/2001/XMLSchema#string" Issuer="CNR-Federation" />
+					</ActionMatch>
+				</Action>
+			</Actions>
+		</Target>
+	</Rule>
+</Policy>

@@ -1,0 +1,20 @@
+<Policy xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" PolicyId="pre-policy"
+RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable" Version="1.0">
+<Description>Test pre-authorization policy</Description>
+<Target></Target>
+<Rule Effect="Permit" RuleId="test:rule">
+<Target>
+<AnyOf>
+<AllOf>
+<Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">usr</AttributeValue>
+<AttributeDesignator AttributeId="urn:contrail:names:federation:subject:name" 
+Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" 
+DataType="http://www.w3.org/2001/XMLSchema#string" MustBePresent="true" Issuer="CNR-Federation">
+</AttributeDesignator>
+</Match>
+</AllOf>
+</AnyOf>
+</Target>
+</Rule>
+</Policy>

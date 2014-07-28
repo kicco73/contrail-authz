@@ -47,6 +47,7 @@ public class SimpleTest {
 	    System.out.println("Test: prepare request");
 	    // List<PepRequestAttribute> req = prepareRequest();
 
+	    // KMcC;)
 	    X509Certificate cert = null;
 	    try {
 	    InputStream inStream = getClass().getClassLoader().getResourceAsStream("cert.cer");

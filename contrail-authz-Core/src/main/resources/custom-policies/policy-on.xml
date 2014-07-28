@@ -1,0 +1,45 @@
+<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+	PolicyId="urn:contraion:ucon:test-policy-on"
+	RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+	<Description>
+		TEST VEP-UCON POLICY ON
+	</Description>
+	<Target />
+	<Rule RuleId="urn:contraion:ucon:test-rule-on" Effect="Permit">
+		<Description>
+			A user with a reputation above 5 can run a vm
+		</Description>
+		<Target>
+			<Subjects>
+				<Subject>
+					<SubjectMatch
+						MatchId="urn:oasis:names:tc:xacml:1.0:function:integer-less-than">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#integer">5</AttributeValue>
+						<SubjectAttributeDesignator
+							AttributeId="urn:contrail:names:federation:subject:reputation"
+							DataType="http://www.w3.org/2001/XMLSchema#integer" />
+					</SubjectMatch>
+				</Subject>
+			</Subjects>
+			<Resources>
+				<Resource>
+					<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">OVFAPPLICATION</AttributeValue>
+						<ResourceAttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+							DataType="http://www.w3.org/2001/XMLSchema#string" Issuer="CNR-Federation" />
+					</ResourceMatch>
+				</Resource>
+			</Resources>
+			<Actions>
+				<Action>
+					<ActionMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">deploy</AttributeValue>
+						<ActionAttributeDesignator AttributeId="urn:contrail:vep:action:id"
+							DataType="http://www.w3.org/2001/XMLSchema#string" Issuer="CNR-Federation" />
+					</ActionMatch>
+				</Action>
+			</Actions>
+		</Target>
+	</Rule>
+</Policy>
