@@ -9,7 +9,7 @@
 	<fileSets>		
 		<fileSet>
 			<directory>${project.build.directory}</directory>
-			<outputDirectory>${user.home}/axis2-1.6.2/repository/services</outputDirectory> <!--how to set axis home properly?-->
+			<outputDirectory>../axis2-1.6.2/repository/services</outputDirectory> 
 			<includes>
 				<include>*.aar</include>
 			</includes>

@@ -3,6 +3,7 @@
 	<name>contrail-authz-Core</name>
 	<comment></comment>
 	<projects>
+		<project>contrail-authz-Utils</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

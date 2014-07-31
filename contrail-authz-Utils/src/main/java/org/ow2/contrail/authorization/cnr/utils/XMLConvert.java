@@ -19,13 +19,15 @@ import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.util.XMLObjectHelper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class XMLConvert {
-
+	private static Logger log = LoggerFactory.getLogger(XMLConvert.class);	// KMcC;)
     // TODO do better...
 
     public XMLConvert() {
@@ -109,7 +111,8 @@ public class XMLConvert {
 	try {
 	    return XMLUtils.toDOM(element);
 	} catch (Exception e) {
-	    throw new XacmlSamlException("Unable to convert XML from Axiom OMElement to standard w3c Element.", e);
+		log.error("EEEEK ***** "+e.getMessage());
+	    throw new XacmlSamlException("Unable to convert XML from Axiom OMElement to w3c Element: " + e.getMessage(), e);
 	}
     }
 

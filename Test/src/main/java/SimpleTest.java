@@ -50,13 +50,14 @@ public class SimpleTest {
 	    // KMcC;)
 	    X509Certificate cert = null;
 	    try {
-	    InputStream inStream = getClass().getClassLoader().getResourceAsStream("cert.cer");
-		CertificateFactory cf = CertificateFactory.getInstance("X.509");
-		cert = (X509Certificate) cf.generateCertificate(inStream);
-		inStream.close();
+	    	InputStream inStream = getClass().getClassLoader().getResourceAsStream("cert.cer");
+	    	CertificateFactory cf = CertificateFactory.getInstance("X.509");
+	    	cert = (X509Certificate) cf.generateCertificate(inStream);
+	    	inStream.close();
 
 	    } catch (Exception e) {
-		e.printStackTrace();
+	    	System.out.println("Test: error reading certificate\n");
+	    	e.printStackTrace();
 	    }
 
 	    String type = UconConstants.XML_STRING;

@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.w3c.dom.Node;
 
 public class PipCommunicator {
 
@@ -102,10 +103,11 @@ public class PipCommunicator {
     public Element queryIdentityProvider(String urlString, Element data) throws SOAPException {
 
 	if(log.isDebugEnabled()) {
-	    log.debug("{} query to identity provider:\n{}", logTag, XMLConvert.toString(data));
+	    log.debug("{} query to identity provider {}:\n{}", logTag, urlString, XMLConvert.toString(data));
 	}
 	
 	// Create SOAP message
+	log.debug("{} CREATE SOAP MESSAGE {}:\n{}", logTag, "[KMcC;)]");
 	SOAPMessage msg = createSOAPMessage(data);
 	log.debug("{} compose SOAP message", logTag);
 	// Create SOAP connection
@@ -129,15 +131,20 @@ public class PipCommunicator {
     private SOAPMessage createSOAPMessage(Element data) throws SOAPException {
 
 	// Create SOAP message
+   	log.debug("[KMcC;)] createSOAPMessage(): creating" );
 	SOAPMessage soapMessage = (SOAPMessage) messageFactory.createMessage();
 	// TODO: Identity Provider uses Soap 1.1 but it requests Soap 1.2 Content Type ("application/soap+xml")
 	SOAPEnvelope env = soapMessage.getSOAPPart().getEnvelope();
 	env.addNamespaceDeclaration(SOAPConstants.SOAP_ENV_PREFIX, SOAPConstants.URI_NS_SOAP_1_1_ENVELOPE);
 	// remove header from soap message
+   	log.debug("[KMcC;)] createSOAPMessage(): detaching node" );
 	soapMessage.getSOAPHeader().detachNode();
 
 	// add xml document to soap body
-	soapMessage.getSOAPBody().appendChild(data);
+   	log.debug("[KMcC;)] createSOAPMessage(): adding XML: "+data.toString());
+   	Node n = soapMessage.getSOAPPart().importNode(data, true);	// WrongDocument bug fixed -- KMcC;)
+	soapMessage.getSOAPBody().appendChild(n);
+   	log.debug("[KMcC;)] createSOAPMessage(): DONE" );
 	return soapMessage;
     }
 

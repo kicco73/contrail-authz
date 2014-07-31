@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory;
 public class UconWs implements Lifecycle {
 
     private static Logger log = LoggerFactory.getLogger(UconWs.class);
-    private static final String logTag = "[UCON]: ";
+    private static final String logTag = "[UCONX]: ";
 
     @Override
     public void init(ServiceContext serviceContext) throws AxisFault {
@@ -31,8 +31,13 @@ public class UconWs implements Lifecycle {
 	    try {
 		OpenSamlCore.init(serviceContext);
 	    } catch (XacmlSamlException e) {
-		throw new AxisFault(e.getMessage());
+		    throw new AxisFault(e.getMessage());
 	    }
+    	// KMcC;)
+	    catch (NoSuchMethodError e) {
+		    log.error("{} [KMcC;)] cannot call OpenSamlCore.init(): no such method "+e.getMessage(), logTag);
+		    throw e;
+		}
 	    try {
 		HibernateUtil.init(serviceContext);
 	    } catch (SQLException e) {

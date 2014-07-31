@@ -25,17 +25,20 @@ import org.ow2.contrail.authorization.cnr.core.db.UconAttribute;
 import org.ow2.contrail.authorization.cnr.core.db.UconHolder;
 import org.ow2.contrail.authorization.cnr.core.db.UconSession;
 import org.ow2.contrail.authorization.cnr.core.ucon.UconOptions;
+import org.ow2.contrail.authorization.cnr.core.ucon.UconWs;
 import org.ow2.contrail.authorization.cnr.utils.UconCategory;
 import org.ow2.contrail.authorization.cnr.utils.OpenSamlUtils;
 import org.ow2.contrail.authorization.cnr.utils.UconConstants;
 import org.ow2.contrail.authorization.cnr.utils.XMLConvert;
 import org.ow2.contrail.authorization.cnr.utils.XacmlAttribute;
 import org.ow2.contrail.authorization.cnr.utils.XacmlSamlException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 public class OpenSamlCore extends OpenSamlUtils implements XacmlSamlCoreUtils {
-
+	private static Logger log = LoggerFactory.getLogger(UconWs.class);	// KMcC;)
     private DocumentBuilder builderDocument;
     // private AssertionBuilder builderAssertion;
     private RequestTypeImplBuilder builderRequest;
@@ -80,6 +83,7 @@ public class OpenSamlCore extends OpenSamlUtils implements XacmlSamlCoreUtils {
 
 	try {
 	    // get instance from superclass OpenSamlUtils. the current class will be instantiate by reflection.
+		log.debug("{} ServiceContext: "+serviceContext, "[KMcC;]");
 	    return (OpenSamlCore) OpenSamlUtils.getInstanceBase(serviceContext, OpenSamlCore.class);
 	} catch (NoSuchMethodException e) {
 	    throw new RuntimeException("This should not be possible", e);

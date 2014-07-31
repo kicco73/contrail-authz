@@ -138,10 +138,10 @@
 						</fileSet>
 						<fileSet>
 							<directory>src/main/config</directory>
-							<outputDirectory>${user.home}/axis2-1.6.2/repository/services</outputDirectory>
+							<outputDirectory>../axis2-1.6.2/repository/services</outputDirectory>
 						</fileSet>
 					</fileSets>
-					<outputDirectory>${user.home}/axis2-1.6.2/repository/services</outputDirectory> <!--how to set axis home properly?-->
+					<outputDirectory>../axis2-1.6.2/repository/services</outputDirectory>
 				</configuration>
 				<executions>
 					<execution>

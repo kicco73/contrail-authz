@@ -57,6 +57,7 @@ public class PEP {
     protected String doATryaccess(PepState state, X509Certificate cert, List<PepRequestAttribute> otherAccessRequest) throws CertificateException,
 	    AxisFault, XacmlSamlException {
 	log.info("{} tryaccess called", logTag);
+	//System.out.println("{KMcC;)} tryaccess called\n");
 
 	// check the correct state
 	String check = state.checkAction(PepAction.TRY);
@@ -73,6 +74,7 @@ public class PEP {
 	// perform tryaccess call
 	Element accessResponse = communicator.sendATryaccess(xmlMessage);
 	log.debug("{} tryaccess sent", logTag);
+	System.out.println("[KMcC;)] tryaccess sent\n");
 
 	String resp = utils.getSessionIdFromTryaccessResponse(accessResponse);
 

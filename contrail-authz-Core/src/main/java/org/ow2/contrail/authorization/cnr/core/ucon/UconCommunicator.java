@@ -17,7 +17,8 @@ public class UconCommunicator {
     private final Options attributeQueryOptions;
     private final Options subscribeOptions;
     private final Options unsubscribeOptions;
-    
+//    private final Options fakeSamlOptions;
+
     private UconCommunicator(EndpointReference endpointPIP) {
 	// initialize attribute query options
 	attributeQueryOptions = new Options();
@@ -42,6 +43,16 @@ public class UconCommunicator {
 	// Setting action
 	unsubscribeOptions.setAction("urn:" + UconConstants.UNSUBSCRIBE_METHOD_NAME);
 	unsubscribeOptions.setCallTransportCleanup(true);
+	
+	// [KMcC;)]
+	// initialize fake saml options
+//	fakeSamlOptions = new Options();
+//	// setting target EPR
+//	fakeSamlOptions.setTo(endpointPIP);
+//	// Setting action
+//	fakeSamlOptions.setAction("urn:" + UconConstants.FAKE_SAML_METHOD_NAME);
+//	fakeSamlOptions.setCallTransportCleanup(true);
+
     }
 
     public static void init(ServiceContext serviceContext) {

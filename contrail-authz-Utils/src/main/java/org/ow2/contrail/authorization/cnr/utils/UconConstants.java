@@ -39,6 +39,7 @@ public class UconConstants {
     
     // web service names (UCON)
     public static final String UCON_NAMESPACE = "http://ucon.core.cnr.authorization.contrail.ow2.org";
+    
     public static final String TRYACCESS_METHOD_NAME = "tryaccess";
     public static final String TRYACCESS_PARAM_NAME = "request";
     public static final String STARTACCESS_METHOD_NAME = "startaccess";
@@ -53,6 +54,8 @@ public class UconConstants {
     
     // web service names (PIP)
     public static final String PIP_NAMESPACE = "http://pip.cnr.authorization.contrail.ow2.org";
+    // [KMcC;)]
+    //public static final String PIP_NAMESPACE = "urn:oasis:names:tc:SAML:2.0:protocol";
     public static final String ATTRIBUTE_QUERY_METHOD_NAME = "attributeQuery";
     public static final String ATTRIBUTE_QUERY_PARAM_NAME = "request";
     public static final String SUBSCRIBE_METHOD_NAME = "subscribe";
@@ -61,7 +64,10 @@ public class UconConstants {
     public static final String UNSUBSCRIBE_PARAM_NAME = "request";
     public static final String TRIGGER_UPDATE_METHOD_NAME = "triggerUpdate";
 
-    
+//    // [KMcC;)]
+//    public static final String FAKE_SAML_METHOD_NAME = "fakeSaml";
+//    public static final String FAKE_SAML_PARAM_NAME = "request";
+//    
     @Deprecated
     public static final String END_MESSAGE = "end";
     @Deprecated

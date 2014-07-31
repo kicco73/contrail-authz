@@ -1,0 +1,56 @@
+<Policy xmlns="urn:oasis:names:tc:xacml:2.0:policy:schema:os"
+	xmlns:xx="urn:oasis:names:tc:xacml:2.0:policy:schema:os" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="urn:oasis:names:tc:xacml:2.0:policy:schema:os
+        access_control-xacml-2.0-policy-schema-os.xsd"
+	PolicyId="urn:oasis:names:tc:xacml:2.0:conformance-test:IIA1:policy"
+	RuleCombiningAlgId="urn:oasis:names:tc:xacml:1.0:rule-combining-algorithm:first-applicable">
+	<Description>
+		Example of Policy
+	</Description>
+	<Target />
+	<Rule RuleId="vep:rule" Effect="Permit">
+		<Description>
+			a User can Deploy a VMTemplate if the number of current active VMs is
+			less than two
+		</Description>
+		<Target>
+			<Subjects>
+				<Subject>
+					<SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">gold</AttributeValue>
+						<SubjectAttributeDesignator
+							AttributeId="urn:contrail:names:federation:subject:group"
+							DataType="http://www.w3.org/2001/XMLSchema#string" Issuer="CNR-Federation" />
+					</SubjectMatch>
+				</Subject>
+				<Subject>
+					<SubjectMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">silver</AttributeValue>
+						<SubjectAttributeDesignator
+							AttributeId="urn:contrail:names:federation:subject:group"
+							DataType="http://www.w3.org/2001/XMLSchema#string" Issuer="CNR-Federation" />
+					</SubjectMatch>
+				</Subject>
+			</Subjects>
+			<Resources>
+				<Resource>
+					<ResourceMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">OVFAPPLICATION</AttributeValue>
+						<ResourceAttributeDesignator
+							AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+							DataType="http://www.w3.org/2001/XMLSchema#string" Issuer="CNR-Federation" />
+					</ResourceMatch>					
+				</Resource>
+			</Resources>
+			<Actions>
+				<Action>
+					<ActionMatch MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+						<AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">deploy</AttributeValue>
+						<ActionAttributeDesignator AttributeId="urn:contrail:vep:action:id"
+							DataType="http://www.w3.org/2001/XMLSchema#string" Issuer="CNR-Federation" />
+					</ActionMatch>
+				</Action>
+			</Actions>
+		</Target>
+	</Rule>
+</Policy>

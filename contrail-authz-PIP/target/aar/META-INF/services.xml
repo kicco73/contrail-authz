@@ -20,6 +20,9 @@
 	<operation name="triggerUpdate">
 		<messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out" class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
 	</operation>
+	<operation name="fakeSaml">
+		<messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out" class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+	</operation>
 	<parameter name="ServiceClass" locked="false">
 		org.ow2.contrail.authorization.cnr.pip.Pip
 	</parameter>
