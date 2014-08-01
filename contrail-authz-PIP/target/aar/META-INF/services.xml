@@ -1,3 +1,4 @@
+<serviceGroup>
 <service name="Pip" scope="application">
 	<Description>
 		CNR Policy Information Point (PIP)
@@ -20,10 +21,21 @@
 	<operation name="triggerUpdate">
 		<messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out" class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
 	</operation>
-	<operation name="fakeSaml">
-		<messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out" class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
-	</operation>
 	<parameter name="ServiceClass" locked="false">
 		org.ow2.contrail.authorization.cnr.pip.Pip
 	</parameter>
 </service>
+<service name="FS" scope="application" targetNamespace="urn:oasis:names:tc:SAML:2.0:protocol">
+	<schema schemaNamespace="urn:oasis:names:tc:SAML:2.0:protocol" elementFormDefaultQualified="false"/>
+	<Description>
+		KMcC;) Fake services (FS)
+	</Description>
+	<operation name="fakeSaml">
+		<messageReceiver mep="http://www.w3.org/2004/08/wsdl/in-out" class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+	</operation>
+	<parameter name="ServiceClass" locked="false">
+		org.ow2.contrail.authorization.cnr.pip.Fake
+	</parameter>
+</service>
+</serviceGroup>
+

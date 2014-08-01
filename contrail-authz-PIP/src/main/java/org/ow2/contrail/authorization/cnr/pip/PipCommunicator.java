@@ -23,6 +23,7 @@ import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.axis2.AxisFault;
@@ -148,38 +149,34 @@ public class PipCommunicator {
 	return soapMessage;
     }
 
+    
+    private String messageToString(SOAPMessage soapMessage) throws SOAPException {
+    	// Transform SOAP message in string format
+    	StringWriter stringWriter = new StringWriter();
+    	try {
+        	Source sourceContent = soapMessage.getSOAPPart().getContent();
+    		Transformer transformer = transformerFactory.newTransformer();
+    	    transformer.transform(sourceContent, new StreamResult(stringWriter));
+    	} catch (TransformerException e) {
+    	   	log.error("{} [KMcC;)] extractContentFromSOAPMessage() exception 1! {}", logTag, e.getMessage());
+    	    throw new SOAPException(e);
+    	}
+    	return stringWriter.toString();
+    }
+    
     private Element extractContentFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
 
 	// TODO: Identity Provider replies using Soap 1.1 namespace even if it use Soap 1.2 protocol
 	// Replacing namespace only in string format
 	// Where to put the temporary string
-	StringWriter stringWriter = new StringWriter();
-	// Get the SOAP content
-	Source sourceContent = soapMessage.getSOAPPart().getContent();
-	// Transform SOAP message in string format
-	Transformer transformer;
-	try {
-	    transformer = transformerFactory.newTransformer();
-	    transformer.transform(sourceContent, new StreamResult(stringWriter));
-	} catch (TransformerException e) {
-	    throw new SOAPException(e);
-	}
-	transformer.reset();
-	String res = stringWriter.toString();
-	// Replace invalid namespace
-	res = res.replaceAll(SOAPConstants.URI_NS_SOAP_1_1_ENVELOPE, SOAPConstants.URI_NS_SOAP_1_2_ENVELOPE);
-	// Create a new SOAP message from new string
-	SOAPMessage soapMessage2;
-	try {
-	    soapMessage2 = (SOAPMessage) messageFactory.createMessage(null, new ByteArrayInputStream(res.getBytes()));
-	} catch (IOException e) {
-	    throw new SOAPException(e);
-	}
-	// ----------------------------------------------------------------
-	// Extract body as a XML document
-	Document resd = soapMessage2.getSOAPBody().extractContentAsDocument();
+   	log.info("{} [KMcC;)] extractContentFromSOAPMessage() called", logTag);
+   	log.info("{} [KMcC;)] extractContentFromSOAPMessage() received: {}", logTag, messageToString(soapMessage));
 
-	return resd.getDocumentElement();
+	Document resd = soapMessage.getSOAPBody().extractContentAsDocument();
+
+	log.info("{} [KMcC;)] extractContentFromSOAPMessage(): extractContentAsDocument: {}", logTag, resd);
+
+	Element rv =  (Element)resd.getFirstChild();
 	// // Where to put result
 	// StringWriter msg = new StringWriter();
 	// // Transform SOAP message in string format (again)
@@ -190,13 +187,11 @@ public class PipCommunicator {
 	// }
 	// // Return the string
 	// return msg.toString();
-    }
+   	log.info("{} [KMcC;)] extractContentFromSOAPMessage() finished. rv = {}", logTag, rv);
 
-    private void printSOAPResponse(Transformer transformer, Source sourceContent, StreamResult result) throws Exception {
-	transformer.transform(sourceContent, result);
-	transformer.reset();
+	return rv;
     }
-
+ 
     @Deprecated
     public String queryIdentityProviderSocket(String urlString, String data) throws IOException {
 	if (data == null)

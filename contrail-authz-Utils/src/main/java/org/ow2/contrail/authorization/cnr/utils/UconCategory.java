@@ -4,8 +4,11 @@ public enum UconCategory {
     SUBJECT, RESOURCE, ACTION, ENVIRONMENT;
     
     public static UconCategory getCategoryFromTag(String tag) {
-	if(tag == null)
+	if(tag == null) {
+		// KMcC;) 
+		System.out.println("{[UconCategory] [KMcC;)] getCategoryFromTag(): NULL POINTER EXCEPTION!");
 	    throw new NullPointerException();
+	}
 	if(tag.equals(UconConstants.PIP_REQUEST_RESOURCE_Tag))
 	    return UconCategory.RESOURCE;
 	if(tag.equals(UconConstants.PIP_REQUEST_SUBJECT_Tag))

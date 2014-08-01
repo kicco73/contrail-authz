@@ -139,6 +139,7 @@ public class PipExecutor {
 	    String url = getIdentityProviderUrl(query);
 	    Element response = communicator.queryIdentityProvider(url, query.getSamlAttributeQuery());
 	    // TODO: auto update: where I can get this value? I know it statically, or Identity Provider could give me?
+	    log.debug("{} [KMCc;)] contactIdentityProvider() got response: {}", logTag, response);
 	    PipDataEntity result = PipDataEntity.getInstanceFromSaml(serviceContext, response, query.getCategory(), query.getSubscriber(), false);
 	    return result;
 	} catch (SOAPException e) {

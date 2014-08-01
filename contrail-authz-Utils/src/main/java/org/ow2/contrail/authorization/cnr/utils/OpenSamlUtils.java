@@ -73,7 +73,11 @@ public abstract class OpenSamlUtils {
     protected static OpenSamlUtils getInstanceBase(ServiceContext serviceContext, Class<? extends OpenSamlUtils> classType)
 	    throws XacmlSamlException, NoSuchMethodException, InstantiationException, IllegalAccessException, IllegalArgumentException,
 	    InvocationTargetException {
-	if (classType == null) throw new NullPointerException();
+	if (classType == null) {
+		// KMcC;) 
+		logger.error("[OpenSamlUtils] [KMcC;)] getInstanceBase(): NULL POINTER EXCEPTION!");
+		throw new NullPointerException();
+	}
 
 	if (serviceContext == null) {
 	    if (utils == null) {

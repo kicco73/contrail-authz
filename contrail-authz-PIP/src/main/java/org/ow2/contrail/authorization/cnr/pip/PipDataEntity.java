@@ -40,8 +40,11 @@ public class PipDataEntity {
     public static List<PipDataEntity> getInstanceFromUconRequest(ServiceContext serviceContext, Element request, String subscriber)
 	    throws XacmlSamlException {
 
-	if (serviceContext == null || request == null)
+	if (serviceContext == null || request == null) {
+		// KMcC;) 
+		log.error("{} [KMcC;)] getInstanceFromUconRequest(): NULL POINTER EXCEPTION!", logTag);
 	    throw new NullPointerException();
+	}
 
 	XacmlSamlPipUtils utils = OpenSamlPip.getInstance(serviceContext);
 	// separate different owner in request
@@ -69,16 +72,22 @@ public class PipDataEntity {
     public static PipDataEntity getInstanceFromSaml(ServiceContext serviceContext, Element samlString, UconCategory category, String subscriber,
 	    boolean autoupdate) throws XacmlSamlException {
 
-	if (serviceContext == null || samlString == null || category == null)
+	if (serviceContext == null || samlString == null || category == null) {
+		// KMcC;) 
+		log.error("{} [KMcC;)] getInstanceFromSaml(): NULL POINTER EXCEPTION!", logTag);
 	    throw new NullPointerException();
+	}
 	return (new PipDataEntity(serviceContext)).setSaml(samlString, category, subscriber, autoupdate);
 
     }
 
     public static PipDataEntity getInstanceFromXacml(ServiceContext serviceContext, Element xacmlString, String subscriber, boolean autoupdate)
 	    throws XacmlSamlException {
-	if (serviceContext == null || xacmlString == null)
+	if (serviceContext == null || xacmlString == null) {
+		// KMcC;) 
+		log.error("{} [KMcC;)] getInstanceFromXacml(): NULL POINTER EXCEPTION!", logTag);
 	    throw new NullPointerException();
+	}
 	return (new PipDataEntity(serviceContext)).setXacml(xacmlString, subscriber, autoupdate);
     }
 

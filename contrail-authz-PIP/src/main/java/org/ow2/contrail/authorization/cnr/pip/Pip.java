@@ -34,9 +34,10 @@ public class Pip implements Lifecycle {
 			log.info("{} initialization started", logTag);
 			// TODO once we have a table of identity provider, change this
 			serviceContext.setProperty(UconConstantsPip.IDENTITY_PROVIDER_URL,
-					"http://146.48.81.249:8085/federation-api/usersutils/saml");
+					"http://146.48.81.254:8085/federation-api/usersutils/saml");
+			// [KMcC;)]
 			serviceContext.setProperty(UconConstantsPip.IDENTITY_PROVIDER_URL,
-					"http://localhost:8080/axis2/services/Pip/fakeSaml");
+					"http://localhost:8080/axis2/services/FS/fakeSaml");
 			log.info(
 					"{} [KMcC;)] identity provider URL set to: {}",
 					logTag,
@@ -178,48 +179,4 @@ public class Pip implements Lifecycle {
 		// }
 	}
 
-	// [KMcC;]
-	public OMElement fakeSaml(OMElement request) throws XacmlSamlException {
-		String xmlString = "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>"
-				+ "<soap11:Envelope xmlns:soap11=\"http://schemas.xmlsoap.org/soap/envelope/\">"
-				+ "<soap11:Body>"
-				+ "<saml2p:Response xmlns:saml2p=\"urn:oasis:names:tc:SAML:2.0:protocol\" "
-				+ "ID=\"_946d879f37a82f98c54c75495a9a682f\" InResponseTo=\"AttrQuery12345789\" "
-				+ "IssueInstant=\"2012-03-02T13:33:18.866Z\" Version=\"2.0\">"
-				+ "<saml2:Issuer xmlns:saml2=\"urn:oasis:names:tc:SAML:2.0:assertion\">CNR-PIP</saml2:Issuer>"
-				+ "<saml2p:Status>"
-				+ "<saml2p:StatusCode Value=\"urn:oasis:names:tc:SAML:2.0:status:Success\" />"
-				+ "</saml2p:Status>"
-				+ "<saml2:Assertion xmlns:saml2=\"urn:oasis:names:tc:SAML:2.0:assertion\" "
-				+ "ID=\"_6296dc07137f221a500be6ab19511fa0\" IssueInstant=\"2012-03-02T13:33:18.864Z\" "
-				+ "Version=\"2.0\">"
-				+ "<saml2:Issuer>CNR-PIP</saml2:Issuer>"
-				+ "<saml2:Subject>"
-				+ "<saml2:NameID Format=\"urn:oasis:names:tc:SAML:2.0:nameid-format:transient\">usr</saml2:NameID>"
-				+ "</saml2:Subject>"
-				+ "<saml2:Conditions NotBefore=\"2012-03-02T13:33:08.864Z\" "
-				+ "NotOnOrAfter=\"2012-03-02T14:03:18.864Z\" />"
-				+ "<saml2:AttributeStatement>"
-				+ "<saml2:Attribute Name=\""
-				+ "urn:contrail:names:federation:subject:reputation0\" "
-				+ "DataType=\"http://www.w3.org/2001/XMLSchema#integer\">"
-				+ // ???
-				"<saml2:AttributeValue>7</saml2:AttributeValue>"
-				+ "</saml2:Attribute>" + "</saml2:AttributeStatement>"
-				+ "</saml2:Assertion>" + "</saml2p:Response>"
-				+ "</soap11:Body>" + "</soap11:Envelope>";
-
-		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		log.info("{} [KMcC;] fakeSaml() called!");
-		try {
-			DocumentBuilder builder = factory.newDocumentBuilder();
-			Document document = builder.parse(new InputSource(new StringReader(
-					xmlString)));
-			log.info("{} [KMcC;] fakeSaml() converting!");
-			return XMLConvert.toOM(document.getDocumentElement());
-		} catch (Exception e) {
-			log.error("{} [KMcC;] fakeSaml() EXCEPTION! " + e.getMessage());
-			throw new XacmlSamlException(e.getMessage());
-		}
-	}
 }
