@@ -37,9 +37,11 @@ public class PipExecutor {
 
     public Element attributeQuery(Element xmlRequest) throws XacmlSamlException {
 	// get the requests
+    	log.debug("{} [KMcC;)] attributeQuery() - xmlRequest = {}", logTag, xmlRequest);
 	List<PipDataEntity> requests = PipDataEntity.getInstanceFromUconRequest(serviceContext, xmlRequest, null);
 
 	// ask for attributes //CHECKME ALWAYS????? TODO it could be optimized (if I had some attributes with auto-update)
+	log.debug("{} [KMcC;)] attributeQuery() - calling contactIdentityProvider()", logTag);
 	PipDataEntity[] data = contactIdentityProvider(requests);
 	// compose the response
 	Element response = PipDataEntity.composeXacmlSet(serviceContext, true, data);
@@ -62,6 +64,8 @@ public class PipExecutor {
 	// update them in database (return the list of not found data)
 	List<PipDataEntity> notUpdated = db.insertSubscriptionIfOwnerExist(dataRequests, subscriber);
 	// ask them to identity provider
+	log.debug("{} [KMcC;)] addSubscription() - calling contactIdentityProvider()", logTag);
+
 	PipDataEntity[] dataGot = contactIdentityProvider(notUpdated);
 	// add the new data
 	boolean res = db.add(dataGot);
@@ -96,6 +100,7 @@ public class PipExecutor {
 	List<PipDataEntity> toUpdate = db.getNotAuto();
 
 	// get the updated values
+	log.debug("{} [KMcC;)] triggeredUpdate() - calling contactIdentityProvider()", logTag);
 	PipDataEntity[] latestData = contactIdentityProvider(toUpdate);
 	// check if values are equal
 	List<PipDataEntity> updated = db.update(toUpdate, latestData);
@@ -123,11 +128,13 @@ public class PipExecutor {
     }
 
     // TODO: parallelize it!!! (preserving the order)
+    
     private PipDataEntity[] contactIdentityProvider(List<PipDataEntity> requests) throws XacmlSamlException {
 	PipDataEntity[] resultArray = new PipDataEntity[requests.size()];
 	int i = 0;
 	// for each data ask the value to identity provider
 	for (PipDataEntity query : requests) {
+		log.debug("{} [KMcC;)] contactIdentityProvider([]) - calling contactIdentityProvider()", logTag);
 	    resultArray[i++] = contactIdentityProvider(query);
 	}
 	// return the data object list
@@ -140,6 +147,9 @@ public class PipExecutor {
 	    Element response = communicator.queryIdentityProvider(url, query.getSamlAttributeQuery());
 	    // TODO: auto update: where I can get this value? I know it statically, or Identity Provider could give me?
 	    log.debug("{} [KMCc;)] contactIdentityProvider() got response: {}", logTag, response);
+	    log.debug("{} [KMCc;)] contactIdentityProvider() serviceContext: {}", logTag, serviceContext);
+	    log.debug("{} [KMCc;)] contactIdentityProvider() category: {}", logTag, query.getCategory());
+	    log.debug("{} [KMCc;)] contactIdentityProvider() subscriber: {}", logTag, query.getSubscriber());
 	    PipDataEntity result = PipDataEntity.getInstanceFromSaml(serviceContext, response, query.getCategory(), query.getSubscriber(), false);
 	    return result;
 	} catch (SOAPException e) {

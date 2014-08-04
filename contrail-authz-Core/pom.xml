@@ -47,8 +47,7 @@
 			<groupId>org.ow2.contrail.common</groupId>
 			<artifactId>contrail-authz-Utils</artifactId>
 			<version>0.1.0-SNAPSHOT</version>
-			<type>jar</type>
-			<!-- <scope>compile</scope> -->
+			<!--<scope>compile</scope>-->
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.ws</groupId>

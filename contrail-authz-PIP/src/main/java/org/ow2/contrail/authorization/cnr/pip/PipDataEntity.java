@@ -62,7 +62,10 @@ public class PipDataEntity {
 	    PipDataEntity data = new PipDataEntity(serviceContext);
 	    data.setDao(dao);
 	    data.setSubscriber(subscriber);
+	    data.category = category; // [KMcC;)] fixup
 	    log.debug("{} complete data: {}", logTag, dao);
+	    log.debug("{} [KMcC;)] getInstanceFromUconRequest() category: {}", logTag, data.getCategory());
+	    log.debug("{} [KMcC;)] getInstanceFromUconRequest() subscribers: {} {}", logTag, data.getSubscriber(), subscriber);
 	    requested.add(data);
 	    // requests.add(data.setSaml(utils.formSAMLAttributeQuery(owner), category, null, false));
 	}

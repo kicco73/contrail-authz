@@ -287,6 +287,7 @@ public class OpenSamlPip extends OpenSamlUtils implements XacmlSamlPipUtils {
 	Response samlResponse = (Response) XMLConvert.toXMLObject(samlDomResponse);
 
 	// CHECKME: I get just the first assertion
+	// XXX HERE
 	if (samlResponse.getAssertions().size() > 0) {
 	    Assertion samlAssertion = samlResponse.getAssertions().get(0);
 	    String owner = samlAssertion.getSubject().getNameID().getValue();

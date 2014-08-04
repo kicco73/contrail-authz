@@ -6,7 +6,7 @@
     <session-factory>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/UconDB</property>
-        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.username">contrail</property>
         <property name="hibernate.connection.password">contrail</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="connection.pool_size">10</property>

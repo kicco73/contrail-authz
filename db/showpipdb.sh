@@ -1,7 +1,7 @@
 #!/bin/bash 
 clear
 pass="contrail"
-mysql -u root -p"$pass" << EOF
+mysql -u contrail -p"$pass" << EOF
 use PipDB;
 select * from Attribute;
 select * from Owner;

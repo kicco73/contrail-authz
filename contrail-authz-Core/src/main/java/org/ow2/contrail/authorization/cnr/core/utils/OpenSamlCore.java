@@ -67,7 +67,7 @@ public class OpenSamlCore extends OpenSamlUtils implements XacmlSamlCoreUtils {
     }
 
     public static void init(ServiceContext serviceContext) throws XacmlSamlException {
-	getInstance(serviceContext);
+    	getInstance(serviceContext);
     }
 
     /**

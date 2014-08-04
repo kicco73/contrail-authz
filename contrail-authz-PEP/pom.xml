@@ -18,9 +18,10 @@
 			<groupId>org.ow2.contrail.common</groupId>
 			<artifactId>contrail-authz-Utils</artifactId>
 			<version>0.1.0-SNAPSHOT</version>
-			<type>jar</type>
+<!-- 			<type>jar</type>
 			<scope>compile</scope>
-		</dependency>
+ -->
+ 		</dependency>
 		<dependency>
 			<groupId>org.ow2.contrail.common</groupId>
 			<artifactId>security-commons</artifactId>
