@@ -17,7 +17,7 @@ import org.w3c.dom.Element;
 public class PipDataEntity {
     
     private static Logger log = LoggerFactory.getLogger(PipDataEntity.class);
-    private static final String logTag = "[PIP_Data_Entity]: ";
+    private static final String logTag = "[PIPDataEntity]: ";
     
     private XacmlSamlPipUtils utils;
     private PipOwner dao;
@@ -63,6 +63,7 @@ public class PipDataEntity {
 	    data.setDao(dao);
 	    data.setSubscriber(subscriber);
 	    data.category = category; // [KMcC;)] fixup
+	    data.subscriber = subscriber;// [KMcC;)] fixup
 	    log.debug("{} complete data: {}", logTag, dao);
 	    log.debug("{} [KMcC;)] getInstanceFromUconRequest() category: {}", logTag, data.getCategory());
 	    log.debug("{} [KMcC;)] getInstanceFromUconRequest() subscribers: {} {}", logTag, data.getSubscriber(), subscriber);
@@ -205,6 +206,7 @@ public class PipDataEntity {
 	// add the subject at the top of list and the resource at the end
 	// change this part if you want to include action or environment
 	for (PipDataEntity d : data) {
+		log.debug("{} [KMcC:)] composeXacmlSet() {}", logTag, d);
 	    switch (d.category) {
 	    case SUBJECT:
 		elem.addFirst(d.getXacml());

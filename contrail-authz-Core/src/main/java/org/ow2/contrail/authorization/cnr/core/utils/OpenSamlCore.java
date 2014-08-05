@@ -302,8 +302,8 @@ public class OpenSamlCore extends OpenSamlUtils implements XacmlSamlCoreUtils {
     public UconSession getAttributeFromPipResponse(Element attributesXml) throws XacmlSamlException {
 	UconSession attr = new UconSession();
 	List<Element> elements = separeGenericRequests(attributesXml);
-
 	for (Element elem : elements) {
+		log.info("[OPENSAMLCORE] [KMcC;)] getAttributeFromPipResponse(): {}", elem.getTagName());
 	    // identify category
 	    String cat = elem.getTagName();
 	    UconCategory category = UconCategory.valueOf(cat);
@@ -345,6 +345,8 @@ public class OpenSamlCore extends OpenSamlUtils implements XacmlSamlCoreUtils {
 		break;
 	    }
 	}
+	log.info("[OPENSAMLCORE] [KMcC;)] getAttributeFromPipResponse(): attr {}", attr.toString());
+
 	return attr;
     }
 

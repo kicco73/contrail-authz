@@ -1,10 +1,7 @@
 package org.ow2.contrail.authorization.cnr.pip;
 
-import java.io.StringReader;
 import java.sql.SQLException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.soap.SOAPException;
 
 import org.apache.axiom.om.OMElement;
@@ -19,9 +16,7 @@ import org.ow2.contrail.authorization.cnr.utils.XMLConvert;
 import org.ow2.contrail.authorization.cnr.utils.XacmlSamlException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.InputSource;
 
 public class Pip implements Lifecycle {
 
@@ -89,10 +84,9 @@ public class Pip implements Lifecycle {
 
 		// execute the attributes retrieval
 		log.info("[KMcC;] {} ECCO 3!: {}", logTag, getMessage(request));
-		log.info("[KMcC;] {} ECCO 4!: {}", logTag,
-				XMLConvert.toDOM(getMessage(request)));
-		Element response = exec.attributeQuery(XMLConvert
-				.toDOM(getMessage(request)));
+		Element dom = XMLConvert.toDOM(getMessage(request));
+		log.info("[KMcC;] {} ECCO 4!: {}", logTag, dom.toString());
+		Element response = exec.attributeQuery(dom);
 
 		log.info("[KMcC;] ECCO RESPONSE", logTag, response);
 		return XMLConvert.toOM(response);

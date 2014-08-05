@@ -17,14 +17,38 @@
 		<version>0.1.0-SNAPSHOT</version> </parent> -->
 	<dependencies>
 		<!-- [KMcC;)] Patch to a working version of saaj - axis2 faults into disallowed 
-			element in Envelope otherwise -->
-		<dependency>
+			element in Envelope otherwise; there are also some TODO's fixed 
+ 		<dependency>
 			<groupId>com.sun.xml.messaging.saaj</groupId>
 			<artifactId>saaj-impl</artifactId>
 			<version>1.3.4</version>
 			<type>jar</type>
 			<scope>compile</scope>
 		</dependency>
+
+		 <dependency>
+	<groupId>org.apache.axis2</groupId>
+	<artifactId>axis2-saaj</artifactId>
+	<version>1.25</version>
+</dependency>
+
+<dependency>
+	<groupId>org.apache.ws.commons.axiom</groupId>
+	<artifactId>axiom-api</artifactId>
+	<version>1.2.14</version>
+</dependency>
+<dependency>
+	<groupId>org.apache.ws.commons.axiom</groupId>
+	<artifactId>axiom-impl</artifactId>
+	<version>1.2.14</version>
+</dependency>
+<dependency>
+	<groupId>org.apache.ws.commons.axiom</groupId>
+	<artifactId>axiom-dom</artifactId>
+	<version>1.2.14</version>
+</dependency>
+-->
+
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>

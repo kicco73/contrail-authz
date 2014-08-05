@@ -121,10 +121,12 @@ public class PipCommunicator {
 	Element response = extractContentFromSOAPMessage(soapResponse);
 	// Close SOAP connection
 	soapConnection.close();
+	log.debug("{} queryIdentityProvider(): returning {}", logTag, response);
 	
 	if(log.isDebugEnabled()) {
-	    log.debug("{} query to identity provider response:\n{}", logTag, XMLConvert.toString(response));
+	    //log.debug("{} query to identity provider response:\n{}", logTag, XMLConvert.toString(response));
 	}
+	log.debug("{} queryIdentityProvider(): done", logTag);
 	
 	return response;
     }
@@ -136,7 +138,7 @@ public class PipCommunicator {
 	SOAPMessage soapMessage = (SOAPMessage) messageFactory.createMessage();
 	// TODO: Identity Provider uses Soap 1.1 but it requests Soap 1.2 Content Type ("application/soap+xml")
 	SOAPEnvelope env = soapMessage.getSOAPPart().getEnvelope();
-	env.addNamespaceDeclaration(SOAPConstants.SOAP_ENV_PREFIX, SOAPConstants.URI_NS_SOAP_1_1_ENVELOPE);
+	//env.addNamespaceDeclaration(SOAPConstants.SOAP_ENV_PREFIX, SOAPConstants.URI_NS_SOAP_1_1_ENVELOPE);
 	// remove header from soap message
    	log.debug("[KMcC;)] createSOAPMessage(): detaching node" );
 	soapMessage.getSOAPHeader().detachNode();
@@ -170,26 +172,15 @@ public class PipCommunicator {
 	// Replacing namespace only in string format
 	// Where to put the temporary string
    	log.info("{} [KMcC;)] extractContentFromSOAPMessage() called", logTag);
-   	log.info("{} [KMcC;)] extractContentFromSOAPMessage() received: {}", logTag, messageToString(soapMessage));
+   	//log.info("{} [KMcC;)] extractContentFromSOAPMessage() received: {}", logTag, messageToString(soapMessage));
 
-	Document resd = soapMessage.getSOAPBody().extractContentAsDocument();
+   	Element resd = (Element) soapMessage.getSOAPBody().getElementsByTagName("Assertion").item(0);   	
+   	
+   	log.info("{} [KMcC;)] extractContentFromSOAPMessage() received: {}", logTag,  resd);
+   	log.info("{} [KMcC;)] extractContentFromSOAPMessage() finished: {}", logTag, resd.getNodeName());
 
-	log.info("{} [KMcC;)] extractContentFromSOAPMessage(): extractContentAsDocument: {}", logTag, resd);
 
-	Element rv =  (Element)resd.getFirstChild();
-	// // Where to put result
-	// StringWriter msg = new StringWriter();
-	// // Transform SOAP message in string format (again)
-	// try {
-	// transformer.transform(new DOMSource(resd), new StreamResult(msg));
-	// } catch (TransformerException e) {
-	// throw new SOAPException(e);
-	// }
-	// // Return the string
-	// return msg.toString();
-   	log.info("{} [KMcC;)] extractContentFromSOAPMessage() finished. rv = {}", logTag, rv);
-
-	return rv;
+	return resd;
     }
  
     @Deprecated
