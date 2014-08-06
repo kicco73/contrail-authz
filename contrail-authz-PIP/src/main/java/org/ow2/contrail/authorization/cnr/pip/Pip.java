@@ -88,7 +88,7 @@ public class Pip implements Lifecycle {
 		log.info("[KMcC;] {} ECCO 4!: {}", logTag, dom.toString());
 		Element response = exec.attributeQuery(dom);
 
-		log.info("[KMcC;] ECCO RESPONSE", logTag, response);
+		log.info("[KMcC;] ECCO RESPONSE before conversion {}", logTag, response);
 		return XMLConvert.toOM(response);
 	}
 

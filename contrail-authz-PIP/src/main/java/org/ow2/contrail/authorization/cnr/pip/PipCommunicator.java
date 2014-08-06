@@ -168,17 +168,13 @@ public class PipCommunicator {
     
     private Element extractContentFromSOAPMessage(SOAPMessage soapMessage) throws SOAPException {
 
-	// TODO: Identity Provider replies using Soap 1.1 namespace even if it use Soap 1.2 protocol
-	// Replacing namespace only in string format
-	// Where to put the temporary string
    	log.info("{} [KMcC;)] extractContentFromSOAPMessage() called", logTag);
    	//log.info("{} [KMcC;)] extractContentFromSOAPMessage() received: {}", logTag, messageToString(soapMessage));
 
-   	Element resd = (Element) soapMessage.getSOAPBody().getElementsByTagName("Assertion").item(0);   	
+   	Element resd = (Element) soapMessage.getSOAPBody().getElementsByTagName("saml2p:Response").item(0);   	
    	
    	log.info("{} [KMcC;)] extractContentFromSOAPMessage() received: {}", logTag,  resd);
    	log.info("{} [KMcC;)] extractContentFromSOAPMessage() finished: {}", logTag, resd.getNodeName());
-
 
 	return resd;
     }

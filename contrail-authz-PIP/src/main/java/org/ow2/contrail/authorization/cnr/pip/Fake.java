@@ -51,23 +51,21 @@ public class Fake implements Lifecycle {
 	public OMElement fakeSaml(OMElement request) throws XacmlSamlException {
 
 	   	String s = ""
-	   			
-				 + "<Assertion xmlns=\"urn:oasis:names:tc:SAML:2.0:assertion\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
-				+ "ID=\"_6296dc07137f221a500be6ab19511fa0\" IssueInstant=\"2012-03-02T13:33:18.864Z\" "
-				+ "Version=\"2.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchemaInstance\">"
-				+ "<Issuer>https://idp.example.org/SAML2</Issuer>"
-				+ "<Subject><NameID Format=\"urn:oasis:names:tc:SAML:2.0:nameid-format:transient\">"
-				+ "</NameID></Subject>"
-	   				+ "<AttributeStatement>"
-	   			   +"<Attribute FriendlyName=\"fooAttrib\" Name=\"issuer\" NameFormat=\"urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified\">"
-	   			   +"<AttributeValue>"
-	   			   +"user101@salesforce.com"
-	   			   +"</AttributeValue>"
-	   			   +"</Attribute>"
-	   			   +"</AttributeStatement>"
-	   			   +"</Assertion>"
-	   			   ;
-
+	   			 +"<saml2p:Response xmlns:saml2p=\"urn:oasis:names:tc:SAML:2.0:protocol\">"
+				 + "<saml:Assertion xmlns:saml=\"urn:oasis:names:tc:SAML:2.0:assertion\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" "
+				 	+ "ID=\"_6296dc07137f221a500be6ab19511fa0\" IssueInstant=\"2012-03-02T13:33:18.864Z\" "
+				 	+ "Version=\"2.0\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchemaInstance\">\n"
+					+ "<saml:Issuer>cccccccc-1674-bbbb-aaaa-1544f346baaa</saml:Issuer>\n"
+					+ "<saml:Subject>\n"
+						+"<saml:NameID Format=\"urn:oasis:names:tc:SAML:2.0:nameid-format:transient\">3f7b3dcf-1674-4ecd-92c8-1544f346baf8</saml:NameID>\n"
+					+ "</saml:Subject>\n"
+					+ "<saml:AttributeStatement>\n"
+	   			   		+"<saml:Attribute FriendlyName=\"fooAttrib\" Name=\"issuer\" NameFormat=\"urn:oasis:names:tc:SAML:2.0:attrname-format:unspecified\">\n"
+	   			   			+"<saml:AttributeValue>user101@salesforce.com</saml:AttributeValue>\n"
+	   			   		+"</saml:Attribute>\n"
+	   			   +"</saml:AttributeStatement>\n"
+	   			 +"</saml:Assertion>\n"
+	   			 +"</saml2p:Response>";
 		
 		try {
 			log.info("{} [KMcC;] fakeSaml() called!");

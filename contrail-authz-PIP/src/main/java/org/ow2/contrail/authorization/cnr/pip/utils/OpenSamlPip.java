@@ -204,7 +204,7 @@ public class OpenSamlPip extends OpenSamlUtils implements XacmlSamlPipUtils {
 		nameID.setValue(name); // ID of principal subject of assertion
 		subject.setNameID(nameID); // associate name id to subject
 		attrQuery.setSubject(subject); // finally set main subject for attribute
-										// query
+		// query
 
 		// Add attribute to request spec:
 		// "if no attributes are specified, it indicates that all attribute allowed by policy are requested"
@@ -271,7 +271,7 @@ public class OpenSamlPip extends OpenSamlUtils implements XacmlSamlPipUtils {
 
 			xacmlAttributeHolder.setAttributeID("HOLDER_ATTRIBUTE");
 			xacmlAttributeHolder
-					.setIssuer(samlAssertion.getIssuer().getValue());
+			.setIssuer(samlAssertion.getIssuer().getValue());
 			xacmlAttributeHolder.setDataType(UconConstants.XML_STRING);
 			AttributeValueType xacmlAttributeHolderValue = xacmlAttrValueBuilder
 					.buildObject();
@@ -299,9 +299,9 @@ public class OpenSamlPip extends OpenSamlUtils implements XacmlSamlPipUtils {
 					// System.out.println("\n******[UTILS PIP] "+samlAttribute.getName()+" value: "
 					// + elem.getAttribute("DataType") + "\n");
 					if (elem.hasAttribute("DataType")) // CHECKME: is datatype
-														// the attribute name
-														// that define the
-														// attribute type?
+						// the attribute name
+						// that define the
+						// attribute type?
 						xacmlAttribute.setDataType(elem
 								.getAttribute("DataType"));
 					else
@@ -356,20 +356,20 @@ public class OpenSamlPip extends OpenSamlUtils implements XacmlSamlPipUtils {
 	 */
 	public PipOwner convertSAMLtoSubscription(Element samlDomResponse,
 			UconCategory category, String subscriber, boolean autoupdate)
-			throws XacmlSamlException {
+					throws XacmlSamlException {
 		PipOwner result = null;
 
 		// Response samlResponse = (Response) XMLConvert.toXMLObject(samlDomResponse); // IT'S EVIL! KMcC;)
 
 		// CHECKME: I get just the first assertion
 
-            
+
 		if (samlDomResponse.getChildNodes().getLength() > 0) {
-			Element samlAssertion = samlDomResponse;
-			Element samlSubject = (Element) samlAssertion.getElementsByTagName("Subject").item(0);
-			Element samlNameID = (Element) samlSubject.getElementsByTagName("NameID").item(0);
+			Element samlAssertion = (Element) samlDomResponse.getElementsByTagName("saml:Assertion").item(0);
+			Element samlSubject = (Element) samlAssertion.getElementsByTagName("saml:Subject").item(0);
+			Element samlNameID = (Element) samlSubject.getElementsByTagName("saml:NameID").item(0);
 			String owner = samlNameID.getTextContent();
-			Element samlIssuer = (Element) samlAssertion.getElementsByTagName("Issuer").item(0);
+			Element samlIssuer = (Element) samlAssertion.getElementsByTagName("saml:Issuer").item(0);
 			String issuer = samlIssuer.getTextContent();
 			result = new PipOwner();
 			result.setName(owner);
@@ -379,19 +379,19 @@ public class OpenSamlPip extends OpenSamlUtils implements XacmlSamlPipUtils {
 			sub.setSubscriber(subscriber);
 			result.addSubscriber(sub);
 			result.setAuto(autoupdate);
-			for (int i = 0; i < samlAssertion.getElementsByTagName("AttributeStatement").getLength(); i++) {
-				Element samlAttributeStatement = (Element) samlAssertion.getElementsByTagName("AttributeStatement").item(i);
-				for(int j = 0; j < samlAttributeStatement.getElementsByTagName("Attribute").getLength(); j++) {
-					Element samlAttribute = (Element)  samlAssertion.getElementsByTagName("Attribute").item(j);
-					Element samlAttributeValue = (Element) samlAssertion.getElementsByTagName("AttributeValue").item(0);
+			for (int i = 0; i < samlAssertion.getElementsByTagName("saml:AttributeStatement").getLength(); i++) {
+				Element samlAttributeStatement = (Element) samlAssertion.getElementsByTagName("saml:AttributeStatement").item(i);
+				for(int j = 0; j < samlAttributeStatement.getElementsByTagName("saml:Attribute").getLength(); j++) {
+					Element samlAttribute = (Element)  samlAssertion.getElementsByTagName("saml:Attribute").item(j);
+					Element samlAttributeValue = (Element) samlAssertion.getElementsByTagName("saml:AttributeValue").item(0);
 					PipAttribute attr = new PipAttribute();
 					attr.setXacml_id(samlAttribute.getAttribute("Name"));
 					attr.setValue(samlAttributeValue.getTextContent());
 					attr.setType(UconConstants.XML_STRING); // TODO: set
-																	// the
-																	// correct
-																	// type from
-																	// a table
+					// the
+					// correct
+					// type from
+					// a table
 					attr.setIssuer(issuer);
 					result.getAttributes().add(attr);
 				}
@@ -400,6 +400,51 @@ public class OpenSamlPip extends OpenSamlUtils implements XacmlSamlPipUtils {
 		log.info("**** {} convertSAMLtoSubscription(): {}", logTag,
 				result);
 		return result;
+	}
+
+	public PipOwner convertSAMLtoSubscriptionOLD(Element samlDomResponse, UconCategory category, String subscriber, boolean autoupdate)
+			throws XacmlSamlException {
+		// NOT WORKING [KMCc;)] See implementation above
+		Response samlResponse = (Response) XMLConvert.toXMLObject(samlDomResponse);
+
+		// CHECKME: I get just the first assertion
+		// XXX HERE
+		
+		log.info("**** {} convertSAMLtoSubscription(): CALLED, ASSERTIONS {}", logTag,
+				samlResponse.getAssertions());
+		if (samlResponse.getAssertions().size() > 0) {
+			Assertion samlAssertion = samlResponse.getAssertions().get(0);
+			String owner = samlAssertion.getSubject().getNameID().getValue();
+			String issuer = samlAssertion.getIssuer().getValue();
+			PipOwner result = new PipOwner();
+			result.setName(owner);
+			result.setIssuer(issuer);
+			result.setCategory(category);
+			PipSubscriber sub = new PipSubscriber();
+			sub.setSubscriber(subscriber);
+			result.addSubscriber(sub);
+			result.setAuto(autoupdate);
+			for (AttributeStatement samlAttributeStatement : samlAssertion.getAttributeStatements()) {
+				for (Attribute samlAttribute : samlAttributeStatement.getAttributes()) {
+					if (!samlAttribute.getAttributeValues().isEmpty()) {
+						// CHECKME: get just the first value
+						if (samlAttribute.getAttributeValues().size() > 0) {
+							PipAttribute attr = new PipAttribute();
+							attr.setXacml_id(samlAttribute.getName());
+							attr.setValue(samlAttribute.getAttributeValues().get(0).getDOM().getTextContent());
+							attr.setType(UconConstants.XML_STRING); // TODO: set the correct type from a table
+							attr.setIssuer(issuer);
+							result.getAttributes().add(attr);
+						}
+					}
+				}
+			}
+			log.info("**** {} convertSAMLtoSubscription(): DONE {}", logTag,
+					result);
+
+			return result;
+		}
+		return null;
 	}
 
 	/**
@@ -461,9 +506,9 @@ public class OpenSamlPip extends OpenSamlUtils implements XacmlSamlPipUtils {
 					// TODO: get type from a table
 
 					if (elem.hasAttribute("DataType")) // CHECKME: is datatype,
-														// the attribute name
-														// that define the
-														// attribute type?
+						// the attribute name
+						// that define the
+						// attribute type?
 						xacmlAttribute.setDataType(elem
 								.getAttribute("DataType"));
 					else
@@ -514,7 +559,7 @@ public class OpenSamlPip extends OpenSamlUtils implements XacmlSamlPipUtils {
 	// List<XACML> -> XML
 	private Element convertXacmlAttributeListToXml(
 			List<AttributeType> attributes, UconCategory category)
-			throws XacmlSamlException {
+					throws XacmlSamlException {
 		Element response;
 		switch (category) {
 		case SUBJECT:

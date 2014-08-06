@@ -301,11 +301,13 @@ public class OpenSamlCore extends OpenSamlUtils implements XacmlSamlCoreUtils {
     @Override
     public UconSession getAttributeFromPipResponse(Element attributesXml) throws XacmlSamlException {
 	UconSession attr = new UconSession();
-	List<Element> elements = separeGenericRequests(attributesXml);
+	
+	//List<Element> elements = separeGenericRequests(attributesXml);
+	List<Element> elements = separeGenericRequests((Element) attributesXml.getElementsByTagName("PipResponse").item(0));
 	for (Element elem : elements) {
-		log.info("[OPENSAMLCORE] [KMcC;)] getAttributeFromPipResponse(): {}", elem.getTagName());
+		log.info("[OPENSAMLCORE] [KMcC;)] getAttributeFromPipResponse(): {}", elem.getLocalName());
 	    // identify category
-	    String cat = elem.getTagName();
+	    String cat = elem.getLocalName().toUpperCase(); // [KMcC;)] getTagName() returns qualified name! this was a bug
 	    UconCategory category = UconCategory.valueOf(cat);
 
 	    switch (category) {

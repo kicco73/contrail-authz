@@ -12,8 +12,8 @@
 			<groupId>org.ow2.contrail.common</groupId>
 			<artifactId>contrail-authz-PEP</artifactId>
 			<version>0.1.0-SNAPSHOT</version>
-			<type>jar</type>
-			<scope>compile</scope>
+<!--  			<type>jar</type>
+			<scope>compile</scope>-->
 		</dependency>
 		<dependency>
     <groupId>xml-apis</groupId>

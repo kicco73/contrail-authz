@@ -135,6 +135,7 @@ public class Communication {
         OMElement resp = serviceClient.sendReceive(message);
         resp.build();
         serviceClient.cleanup();
+        
         try {
 	    return XMLConvert.toDOM(resp);
 	} catch (XacmlSamlException e) {

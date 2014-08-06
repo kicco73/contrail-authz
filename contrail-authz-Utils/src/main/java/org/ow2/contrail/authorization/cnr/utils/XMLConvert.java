@@ -3,15 +3,24 @@ package org.ow2.contrail.authorization.cnr.utils;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.StringReader;
+import java.io.StringWriter;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerConfigurationException;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.axiom.om.OMElement;
 import org.apache.axiom.om.util.AXIOMUtil;
 import org.apache.axis2.util.XMLUtils;
+import org.opensaml.DefaultBootstrap;
 import org.opensaml.xml.Configuration;
 import org.opensaml.xml.XMLObject;
 import org.opensaml.xml.io.MarshallingException;
@@ -19,6 +28,7 @@ import org.opensaml.xml.io.Unmarshaller;
 import org.opensaml.xml.io.UnmarshallerFactory;
 import org.opensaml.xml.io.UnmarshallingException;
 import org.opensaml.xml.parse.BasicParserPool;
+import org.opensaml.xml.parse.XMLParserException;
 import org.opensaml.xml.util.XMLHelper;
 import org.opensaml.xml.util.XMLObjectHelper;
 import org.slf4j.Logger;
@@ -167,6 +177,8 @@ public class XMLConvert {
 
 			BasicParserPool parserPool = new BasicParserPool();
 			Reader reader = new StringReader(str.trim());
+			parserPool.setNamespaceAware(true);
+
 			return XMLObjectHelper.unmarshallFromReader(parserPool, reader);
 
 		} catch (Exception e) {
@@ -176,8 +188,59 @@ public class XMLConvert {
 		}
 	}
 
+	public static XMLObject FIXMEtoXMLObject(Element samlXacml)
+			throws XacmlSamlException {
+		// FIXME rough implementation: convert to string then back to XMLObject since unmarshalling in
+		// opensaml + axis + jax-ws does not work properly.
+		log.info("{} ************ [KMcC;)] toXMLObjectFromSOAP(): UGLY CONVERTER CALLED!", logTag);
+		XMLObject o = null;
+		Source sourceContent = new DOMSource(samlXacml.getOwnerDocument());
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer;
+        //PipedReader reader = new PipedReader();
+		try {
+		    DefaultBootstrap.bootstrap();
+	        //PipedWriter writer = new PipedWriter(reader);
+			StringWriter writer = new StringWriter();
+			transformer = transformerFactory.newTransformer();
+			BasicParserPool parserPool = new BasicParserPool();
+			parserPool.setNamespaceAware(true);
+	        StreamResult result = new StreamResult(writer);
+			log.info("{} [KMcC;)] ******* toXMLObjectFromSOAP(): transforming", logTag);
+	        transformer.transform(sourceContent, result);
+			writer.flush();
+	        Reader reader = new StringReader(writer.toString());	       
+			o = XMLObjectHelper.unmarshallFromReader(parserPool, reader);
+		} catch (TransformerConfigurationException e) {
+			String message = "toXmlObject(): can't create transformer: " + e.getMessage();
+			log.error("{} [KMcC;)] ******* toXMLObjectFromSOAP(): {}", logTag, message);
+			throw new XacmlSamlException(message, e);
+		} catch (TransformerException e) {
+			String message = "toXmlObject(): can't transform: " + e.getMessage();
+			log.error("{} [KMcC;)] ******* toXMLObjectFromSOAP(): {}", logTag, message);
+			throw new XacmlSamlException(message, e);
+		} catch (XMLParserException e) {
+			String message = "toXmlObject(): xml parser exception: " + e.getMessage();
+			log.error("{} [KMcC;)] ******* toXMLObjectFromSOAP(): {}", logTag, message);
+			throw new XacmlSamlException(message, e);
+		} catch (UnmarshallingException e) {
+			String message = "toXmlObject(): can't unmarshall: " + e.getMessage();
+			log.error("{} [KMcC;)] ******* toXMLObjectFromSOAP(): {}", logTag, message);
+			throw new XacmlSamlException(message, e);
+		}
+		catch(Exception e) {
+			String message = "toXmlObject(): unexpected exception: " + e;
+			log.error("{} [KMcC;)] ******* toXMLObjectFromSOAP(): {}", logTag, message);
+			throw new XacmlSamlException(message, e);		
+		}
+		log.info("{} [KMcC;)] ******* toXMLObjectFromSOAP(): DONE", logTag);
+		return o;
+	}
+
 	public static XMLObject toXMLObject(Element samlXacml)
 			throws XacmlSamlException {
+
+		// The following is a good implementation, but does not work since axis.saaj + axiom have TODOs 
 		log.info("{} [KMcC;)] toXMLObject(): called", logTag);
 		try {
 			UnmarshallerFactory unmarshallerFactory = Configuration.getUnmarshallerFactory();
@@ -192,5 +255,4 @@ public class XMLConvert {
 			throw new XacmlSamlException(e);
 		}
 	}
-
 }

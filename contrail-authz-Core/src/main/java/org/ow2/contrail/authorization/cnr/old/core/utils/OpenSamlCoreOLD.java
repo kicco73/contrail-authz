@@ -104,6 +104,7 @@ public abstract class OpenSamlCoreOLD extends OpenSamlUtils implements XacmlSaml
 //		return (OpenSamlPip) obj;
 		
 			try {
+				// WHAT THE F??? [KMcC;)]
 				return (OpenSamlCoreOLD) OpenSamlUtils.getInstanceBase(serviceContext, OpenSamlCoreOLD.class);
 			} catch (NoSuchMethodException e) {
 				throw new RuntimeException("This should not be possible",e);

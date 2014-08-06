@@ -18,6 +18,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 //import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
@@ -64,16 +65,16 @@ public class UconSession {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = LAST_REEVALUATION, nullable = false)
     private Date last_reevaluation;
-//    // OLD VERSION WITH ONE subject, resource, action
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = UconHolder.ID, nullable = false)
-//    private UconHolder subject;
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = UconHolder.ID, nullable = false)
-//    private UconHolder resource;
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = UconHolder.ID, nullable = false)
-//    private UconHolder action;
+    // OLD VERSION WITH ONE subject, resource, action
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "subject_id", nullable = false)
+    private UconHolder subject;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resource_id", nullable = false)
+    private UconHolder resource;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "action_id", nullable = false)
+    private UconHolder action;
     
     @ManyToMany(fetch = FetchType.EAGER)
     @Cascade({ CascadeType.ALL })
@@ -209,50 +210,53 @@ public class UconSession {
     }
     
 //  //FIRST VERSION WITH ONE subject, resource, action
-//    public UconHolder getSubject() {
-//	return subject;
-//    }
-//
-//    public void setSubject(UconHolder subject) {
-//	this.subject = subject;
-//    }
-//
-//    public UconHolder getResource() {
-//	return resource;
-//    }
-//
-//    public void setResource(UconHolder resource) {
-//	this.resource = resource;
-//    }
-//
-//    public UconHolder getAction() {
-//	return action;
-//    }
-//
-//    public void setAction(UconHolder action) {
-//	this.action = action;
-//    }
+    public UconHolder getSubject() {
+	return subject;
+    }
 
-//    public static UconSession formCompleteSession(UconSession session, UconSession attributes) {
-//
-//	UconSession complete = new UconSession();
-//
-//	complete.setMessageId(session.message_id);
-//	complete.setReplyTo(session.getReplyTo());
-//	complete.setSession_id_string(session.getSession_id_string());
-//	complete.setSessionKey(session.getSessionKey());
-//	complete.setStatus(session.getStatus());
-//
-//	complete.setAction(session.getAction());
-//	complete.getAction().addAttribute(attributes.getAction().getAttributes());
-//
-//	complete.setResource(session.getResource());
-//	complete.getResource().addAttribute(attributes.getResource().getAttributes());
-//
-//	complete.setSubject(session.getSubject());
-//	complete.getSubject().addAttribute(attributes.getSubject().getAttributes());
-//
-//	return null;
-//    }
+    public void setSubject(UconHolder subject) {
+	this.subject = subject;
+    }
+
+    public UconHolder getResource() {
+	return resource;
+    }
+
+    public void setResource(UconHolder resource) {
+    	this.resource = resource;
+    }
+
+    public UconHolder getAction() {
+    	return action;
+    }
+
+    public void setAction(UconHolder action) {
+    	this.action = action;
+    }
+
+    public static UconSession formCompleteSession(UconSession session, UconSession attributes) {
+
+    	UconSession complete = new UconSession();
+
+    	complete.setMessageId(session.message_id);
+    	complete.setReplyTo(session.getReplyTo());
+    	complete.setSession_id_string(session.getSession_id_string());
+    	complete.setSessionKey(session.getSessionKey());
+    	complete.setStatus(session.getStatus());
+
+    	complete.setAction(session.getAction());
+    	if(attributes.getAction() != null)
+    		complete.getAction().addAttribute(attributes.getAction().getAttributes());
+
+    	complete.setResource(session.getResource());
+    	if(attributes.getResource() != null)
+    		complete.getResource().addAttribute(attributes.getResource().getAttributes());
+
+    	complete.setSubject(session.getSubject());
+    	if(attributes.getSubject() != null)
+    		complete.getSubject().addAttribute(attributes.getSubject().getAttributes());
+
+    	return complete;
+    }
 
 }

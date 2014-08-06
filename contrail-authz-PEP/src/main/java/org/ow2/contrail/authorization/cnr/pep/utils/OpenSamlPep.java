@@ -39,9 +39,13 @@ import org.ow2.contrail.authorization.cnr.utils.XMLConvert;
 import org.ow2.contrail.authorization.cnr.utils.OpenSamlUtils;
 import org.ow2.contrail.authorization.cnr.utils.UconConstants;
 import org.ow2.contrail.authorization.cnr.utils.XacmlSamlException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 public class OpenSamlPep extends OpenSamlUtils implements XacmlSamlPepUtils {
+	private static Logger log = LoggerFactory.getLogger(OpenSamlPep.class);	// KMcC;)
+	private static String logTag = "[OpenSamlPep]";
 
     private OpenSamlPep() throws XacmlSamlException {
 	super(null);
@@ -300,7 +304,8 @@ public class OpenSamlPep extends OpenSamlUtils implements XacmlSamlPepUtils {
 	    }
 	}
 
-	Response samlResponse = (Response) XMLConvert.toXMLObject(response);
+	log.debug("{} [KMcC;)] getSessionIdFromTryaccessResponse(): got {}", logTag, response);
+	Response samlResponse = (Response) XMLConvert.FIXMEtoXMLObject(response);
 	try {
 	    sessionId = samlResponse.getAssertions().get(0).getID();
 	} catch (IndexOutOfBoundsException e) {

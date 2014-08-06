@@ -8,10 +8,13 @@ import org.ow2.contrail.authorization.cnr.core.db.UconSession;
 import org.ow2.contrail.authorization.cnr.core.utils.OpenSamlCore;
 import org.ow2.contrail.authorization.cnr.core.utils.XacmlSamlCoreUtils;
 import org.ow2.contrail.authorization.cnr.utils.XacmlSamlException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 public class UconDataEntity {
-
+	private static Logger log = LoggerFactory.getLogger(UconWs.class);	// KMcC;)
+	private static String logTag = "[UCONDATAENTITY]";
     private XacmlSamlCoreUtils utils;
     // initial request (Xacml wrapped in Saml)
     private Element samlXacml;
@@ -85,12 +88,17 @@ public class UconDataEntity {
 	if (finalSession == null) {
 	    UconSession attributes = getAttributes();
 	    if (attributes == null) {
-		finalSession = session;
+	    	finalSession = session;
+	    	log.debug("{} [KMcC;)] getFinalSession(): attributes == null, {}", logTag, finalSession);
+
 	    } else {
 		// add attributes (if they exist) to final session
-//		finalSession = UconSession.formCompleteSession(session, attributes);
+	    	finalSession = UconSession.formCompleteSession(session, attributes);
+	    	//finalSession = attributes;// XXX FIXME [KMcC;)] REMOVE!!! THIS WAS NOT IN THE ORIGINAL CODE 
+	    	log.debug("{} [KMcC;)] getFinalSession(): attributes != null, {}", logTag, session);
 	    }
 	}
+	log.debug("{} [KMcC;)] getFinalSession(): {}", logTag, finalSession);
 	return finalSession;
     }
 
